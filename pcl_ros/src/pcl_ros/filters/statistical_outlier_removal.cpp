@@ -62,7 +62,14 @@ pcl_ros::StatisticalOutlierRemoval::config_callback (pcl_ros::StatisticalOutlier
     impl_.setMeanK (config.mean_k);
     NODELET_DEBUG ("[%s::config_callback] Setting the number of points (k) to use for mean distance estimation to: %d.", getName ().c_str (), config.mean_k);
   }
-  
+
+  ROS_WARN ("[%s::config_callback] Current value of the getKeepOrganized parameter is: %s.", getName ().c_str (), impl_.getKeepOrganized() ? "true" : "false" );
+  if (!impl_.getKeepOrganized ())
+  {
+    impl_.setKeepOrganized (true);
+    ROS_WARN ("[%s::config_callback] Set the getKeepOrganized parameter to: %s.", getName ().c_str (), impl_.getKeepOrganized() ? "true" : "false" );
+  }
+
   if (impl_.getStddevMulThresh () != config.stddev)
   {
     impl_.setStddevMulThresh (config.stddev);
@@ -78,4 +85,3 @@ pcl_ros::StatisticalOutlierRemoval::config_callback (pcl_ros::StatisticalOutlier
 
 typedef pcl_ros::StatisticalOutlierRemoval StatisticalOutlierRemoval;
 PLUGINLIB_EXPORT_CLASS(StatisticalOutlierRemoval,nodelet::Nodelet)
-
